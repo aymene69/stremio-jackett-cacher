@@ -2,9 +2,20 @@ import threading
 from typing import List, Dict
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from get_result import get_result_movie, get_result_series
 from push_result import push_result_movie, push_result_series
 app = FastAPI()
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
