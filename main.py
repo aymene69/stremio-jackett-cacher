@@ -6,6 +6,12 @@ from get_result import get_result_movie, get_result_series
 from push_result import push_result_movie, push_result_series
 app = FastAPI()
 
+
+@app.get("/")
+async def alive():
+    return {'alive'}
+
+
 @app.post("/pushResult/movie/")
 async def upload_data(data: List[Dict]):
     threading.Thread(target=push_result_movie, args=(data,)).start()
