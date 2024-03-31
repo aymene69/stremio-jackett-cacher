@@ -6,8 +6,8 @@ def get_result_movie(query):
     connection = db_connect()
     c = connection.cursor()
     # on est sur une base de données postgresql
-    requete_sql = "SELECT * FROM movies WHERE LOWER(title) LIKE LOWER(REPLACE(%s, '.', ' ')) AND year = %s AND language = %s"
-    c.execute(requete_sql, (f"%{query['title']}%", query['year'], query['language']))
+    requete_sql = "SELECT * FROM movies WHERE LOWER(title) LIKE LOWER(REPLACE(%s, '.', ' ')) AND year = %s AND language LIKE %s"
+    c.execute(requete_sql, (f"%{query['title']}%", query['year'], f"%{query['language']}%"))
 
     result = c.fetchall()
     connection.close()
@@ -22,11 +22,11 @@ def get_result_series(query):
     print("Getting series results: " + query['title'] + " " + query['season'] + query['episode'] + " " + query['language'])
     connection = db_connect()
     c = connection.cursor()
-    requete_sql = "SELECT * FROM series WHERE LOWER(title) LIKE LOWER(REPLACE(%s, '.', ' ')) AND season = %s AND episode = %s AND language = %s AND isSeasonFile = 'false'"
-    c.execute(requete_sql, (f"%{query['title']}%", query['season'], query['episode'], query['language']))
+    requete_sql = "SELECT * FROM series WHERE LOWER(title) LIKE LOWER(REPLACE(%s, '.', ' ')) AND season = %s AND episode = %s AND language LIKE %s AND isSeasonFile = 'false'"
+    c.execute(requete_sql, (f"%{query['title']}%", query['season'], query['episode'], f"%{query['language']}%")
     results = c.fetchall()
-    requete_sql = "SELECT * FROM series WHERE LOWER(title) LIKE LOWER(REPLACE(%s, '.', ' ')) AND season = %s AND language = %s AND isSeasonFile = 'true'"
-    c.execute(requete_sql, (f"%{query['title']}%", query['season'], query['language']))
+    requete_sql = "SELECT * FROM series WHERE LOWER(title) LIKE LOWER(REPLACE(%s, '.', ' ')) AND season = %s AND language LIKE %s AND isSeasonFile = 'true'"
+    c.execute(requete_sql, (f"%{query['title']}%", query['season'], f"%{query['language']}%"))
     results2 = c.fetchall()
     connection.close()
     json_data = []
